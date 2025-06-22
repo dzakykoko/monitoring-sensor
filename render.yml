@@ -1,0 +1,17 @@
+# File Konfigurasi Render untuk Aplikasi Laravel
+services:
+  # Nama service kita
+  - type: web
+    name: monitoring-sensor # Anda bisa ganti nama ini jika mau
+    env: php # <-- INI BAGIAN PENTING: Kita paksa menggunakan lingkungan PHP
+    plan: free # Menggunakan paket gratis
+    region: singapore # Mengatur region ke Singapura
+
+    # Perintah untuk membangun aplikasi saat ada push baru
+    buildCommand: "composer install --no-dev --optimize-autoloader"
+
+    # Perintah untuk menjalankan aplikasi
+    startCommand: "php artisan serve --host 0.0.0.0 --port $PORT"
+
+    # Pengaturan Health Check (Opsional tapi bagus)
+    healthCheckPath: /
