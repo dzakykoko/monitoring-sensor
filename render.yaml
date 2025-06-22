@@ -3,7 +3,7 @@ services:
   # Nama service kita
   - type: web
     name: monitoring-sensor # Anda bisa ganti nama ini jika mau
-    env: php # <-- INI BAGIAN PENTING: Kita paksa menggunakan lingkungan PHP
+    runtime: php # <-- Kata kunci yang benar adalah 'runtime'
     plan: free # Menggunakan paket gratis
     region: singapore # Mengatur region ke Singapura
 
