@@ -1,26 +1,46 @@
 <?php
 
+// PASTIKAN NAMESPACE-NYA BENAR: App\Models
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\DataSensor; // Tambahan penting agar relasi dikenali
 
 class Sensor extends Model
 {
     use HasFactory;
 
-    // Nama tabel (optional karena Laravel default-nya plural lowercase)
-    protected $table = 'sensors';
-
-    // Kolom yang boleh diisi
-    protected $fillable = ['nama_sensor'];
+    /**
+     * The attributes that are mass assignable.
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'device_name',
+        'location',
+        'status',
+        'Temp',
+        'Humd',
+        'CO2',
+        'NH3',
+        'barometer',
+        'latitude',
+        'longitude',
+        'status_aktuator_suhu',
+        'status_aktuator_kelembapan',
+        'status_aktuator_co2',
+        'status_aktuator_nh3',
+        'status_aktuator_barometer',
+    ];
 
     /**
-     * Relasi: Satu Sensor memiliki banyak data sensor
+     * The attributes that should be cast.
+     * @var array<string, string>
      */
-    public function data()
-    {
-        return $this->hasMany(DataSensor::class);
-    }
+    protected $casts = [
+        'status_aktuator_suhu' => 'boolean',
+        'status_aktuator_kelembapan' => 'boolean',
+        'status_aktuator_co2' => 'boolean',
+        'status_aktuator_nh3' => 'boolean',
+        'status_aktuator_barometer' => 'boolean',
+    ];
 }

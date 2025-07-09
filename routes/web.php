@@ -1,99 +1,36 @@
 <?php
 
-
-
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\ProfileController;
-
 use App\Http\Controllers\DashboardController;
-
-use App\Http\Controllers\SensorController; // Pastikan controller ini ada
-
-
+use App\Http\Controllers\SensorController;
+use App\Http\Controllers\AntaresController; // Pastikan ini ada
 
 /*
-
 |--------------------------------------------------------------------------
-
 | Web Routes
-
 |--------------------------------------------------------------------------
-
-|
-
-| Here is where you can register web routes for your application. These
-
-| routes are loaded by the RouteServiceProvider and all of them will
-
-| be assigned to the "web" middleware group. Make something great!
-
-|
-
 */
 
-
-
-// Route untuk halaman selamat datang (publik)
-
 Route::get('/', function () {
-
-    Route::get('/', [SensorController::class, 'index']);
-
+    return redirect()->route('login');
 });
 
+// Rute untuk mengambil data dari Antares (untuk scheduler)
+Route::get('/fetch-antares-data', [AntaresController::class, 'fetchAndStore'])->name('fetch.data');
 
+// Rute untuk menguji koneksi ke Antares secara manual di browser
+Route::get('/test-antares-fetch', [AntaresController::class, 'fetchAndStore'])->name('test.fetch');
 
-// Grup untuk semua route yang memerlukan login pengguna
-
-// Middleware 'auth' & 'verified' memastikan pengguna harus login dan terverifikasi email (jika fitur verifikasi aktif)
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
-
-
-    // Route untuk Dashboard Utama
-
-    // URL: /dashboard -> Nama: 'dashboard'
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-
-
-    // Route untuk Halaman Monitoring
-
-    // URL: /monitoring -> Nama: 'monitoring'
-
-    // Ini adalah route yang dibutuhkan oleh link href="{{ route('monitoring') }}" pada file dashboard.blade.php Anda.
-
     Route::get('/monitoring', [SensorController::class, 'index'])->name('monitoring');
-
-
-
-    // Route untuk halaman Profil Pengguna
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-
-
-    // Route untuk Aksi Toggle Aktuator (dieksekusi oleh JavaScript)
-
-    // Ini adalah endpoint API-like untuk tombol ON/OFF
-
-    Route::post('/sensor/{parameter}/toggle', [SensorController::class, 'toggle'])->name('sensor.toggle');
-
-
-
+    Route::post('/sensor/{parameter}/toggle', [SensorController::class, 'toggleActuator'])->name('sensor.toggle');
+    Route::get('/sensor/data', [App\Http\Controllers\SensorController::class, 'getSensorData'])->name('sensor.data');
 });
-
-
-
-
-
-// Route bawaan Laravel Breeze/Jetstream untuk otentikasi (login, register, dll.)
 
 require __DIR__.'/auth.php';

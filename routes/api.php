@@ -14,7 +14,7 @@ use App\Http\Controllers\SensorController;
 // --- Route untuk menerima data sensor dari Antares (POST) ---
 // Ini adalah route utama yang akan menyimpan data.
 Route::post('/antares', [AntaresController::class, 'store']);
-
+Route::post('/sensor-data', [SensorController::class, 'store']);
 // --- Route SEMENTARA untuk verifikasi dari Antares (GET) ---
 // Route ini hanya untuk menjawab tes koneksi dari Antares.
 // Ia akan mengembalikan pesan sukses agar webhook bisa dibuat.
